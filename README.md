@@ -27,7 +27,7 @@ This repository contain the maven configuration to deploy this sharedflow on 3 e
 
 How to use it :
 ```
-cd gcp-token-oauth
+cd sharedflows/gcp-token-oauth
 mvn install -P=dev -Dusername=XXXX -Dpassword=YYYY -Dorganization=ZZZZ
 ```
 
