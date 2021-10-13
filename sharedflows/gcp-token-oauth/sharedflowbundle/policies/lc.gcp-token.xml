@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<LookupCache async="false" continueOnError="false" enabled="true" name="lc.gcp-token">
+    <DisplayName>lc.gcp-token</DisplayName>
+    <CacheResource>gcp-token-oauth-cache</CacheResource>
+    <CacheKey>
+        <Prefix ref="organization.name"/>
+        <KeyFragment ref="environment.name"/>
+        <KeyFragment ref="apiproxy.name"/>
+        <KeyFragment ref="apiproxy.revision"/>
+        <KeyFragment ref="target.name"/>
+    </CacheKey>
+    <AssignTo>google-credentials.access-token</AssignTo>
+</LookupCache>

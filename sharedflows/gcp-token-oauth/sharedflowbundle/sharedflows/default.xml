@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlow name="default">
+    <Step>
+        <Name>lc.gcp-token</Name>
+    </Step>
+    <Step>
+        <Name>kvm.gcp-service-account</Name>
+        <Condition>google-credentials.access-token IS NULL</Condition>
+    </Step>
+    <Step>
+        <Name>js.extract-credentials</Name>
+        <Condition>google-credentials.access-token IS NULL</Condition>
+    </Step>
+    <Step>
+        <Name>gjwt.generate-JWT</Name>
+        <Condition>google-credentials.access-token IS NULL</Condition>
+    </Step>
+    <Step>
+        <Name>sc.gcp-oauth</Name>
+        <Condition>google-credentials.access-token IS NULL</Condition>
+    </Step>
+    <Step>
+        <Name>ev.extract-json</Name>
+        <Condition>google-credentials.access-token IS NULL</Condition>
+    </Step>
+    <Step>
+        <Name>am.add-authorization</Name>
+    </Step>
+    <Step>
+        <Name>pc.gcp-token</Name>
+    </Step>
+</SharedFlow>

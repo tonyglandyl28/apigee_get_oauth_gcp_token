@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.apigee.sharedflows</groupId>
+    <artifactId>apigee-sharedflow-parent</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Plugin Repository</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <main.basedir>${project.basedir}</main.basedir>
+        <!-- Apigee -->
+        <apigee.org>${organization}</apigee.org>
+        <apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+        <apigee.apiversion>v1</apigee.apiversion>
+        <apigee.username>${username}</apigee.username> <!-- define this in maven settings -->
+        <apigee.password>${password}</apigee.password> <!-- define this in maven settings -->
+        <!-- Org config -->
+        <apigee.config.dir>${basedir}</apigee.config.dir>
+        <apigee.config.options>update</apigee.config.options>
+        <!-- OAuth -->
+        <apigee.authtype>oauth</apigee.authtype>
+        <apigee.bearer>${bearer}</apigee.bearer>
+    </properties>
+
+    <build>
+        <plugins>
+
+            <!-- clean files -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+            <!-- manage resources for API Proxy -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${basedir}/target/sharedflowbundle</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>sharedflowbundle</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Install Proxy config -->
+            <plugin>
+                <groupId>com.apigee.edge.config</groupId>
+                <artifactId>apigee-config-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>create-config-cache</id>
+                        <phase>package</phase>                        
+                        <goals>
+                            <goal>caches</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Install Shared Flows -->
+            <plugin>
+                <groupId>io.apigee.build-tools.enterprise4g</groupId>
+                <artifactId>apigee-edge-maven-plugin</artifactId>
+                <version>1.1.6</version>
+                <executions>
+                    <execution>
+                        <id>configure-bundle</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy-bundle</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <options>validate</options>
+                <apigee.profile>dev</apigee.profile>
+                <apigee.env>dev</apigee.env>
+                <apigee.apitype>sharedflow</apigee.apitype> <!-- Only for Shared Flows -->
+                <apigee.options>update</apigee.options> <!-- Shared Flow supports override and update -->
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <options>validate</options>
+                <apigee.profile>test</apigee.profile>
+                <apigee.env>test</apigee.env>
+                <apigee.apitype>sharedflow</apigee.apitype> <!-- Only for Shared Flows -->
+                <apigee.options>update</apigee.options> <!-- Shared Flow supports override and update -->
+            </properties>
+        </profile>
+        <profile>
+            <id>prd</id>
+            <properties>
+                <options>validate</options>
+                <apigee.profile>prd</apigee.profile>
+                <apigee.env>prd</apigee.env>
+                <apigee.apitype>sharedflow</apigee.apitype> <!-- Only for Shared Flows -->
+                <apigee.options>update</apigee.options> <!-- Shared Flow supports override and update -->
+            </properties>
+        </profile>
+    </profiles>
+</project>

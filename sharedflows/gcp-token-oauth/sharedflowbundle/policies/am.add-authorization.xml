@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="am.add-authorization">
+    <DisplayName>am.add-authorization</DisplayName>
+    <Add>
+        <Headers>
+            <Header name="Authorization">Bearer {google-credentials.access-token}</Header>
+        </Headers>
+    </Add>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

@@ -1,0 +1,12 @@
+[
+    {
+      "name": "gcp-token-oauth-cache",
+      "description": "Cache For GCP OAuth SharedFlow",
+      "expirySettings": {
+          "timeoutInSec": {
+              "value": "60"
+          },
+          "valuesNull": false
+      }
+    }
+  ]
