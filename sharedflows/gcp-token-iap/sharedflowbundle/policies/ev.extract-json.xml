@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ev.extract-json">
+    <DisplayName>ev.extract-json</DisplayName>
+    <JSONPayload>
+        <Variable name="id-token">
+            <JSONPath>$.id_token</JSONPath>
+        </Variable>
+    </JSONPayload>
+    <Source clearPayload="false">callout-token</Source>
+    <VariablePrefix>google-credentials</VariablePrefix>
+</ExtractVariables>

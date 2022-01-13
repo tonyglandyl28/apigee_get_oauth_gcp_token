@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlowBundle revision="1" name="gcp-token-oauth">
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <Description>Shared flow permettant de récupérer un token OAuth2 pour appeler un backend GCP</Description>
+    <DisplayName>gcp-token-oauth</DisplayName>
+    <Policies>
+        <Policy>am.create-oauth-header</Policy>
+        <Policy>ev.extract-json</Policy>
+        <Policy>gjwt.generate-JWT</Policy>
+        <Policy>js.extract-credentials</Policy>
+        <Policy>kvm.gcp-service-account</Policy>
+        <Policy>lc.gcp-token</Policy>
+        <Policy>pc.gcp-token</Policy>
+        <Policy>sc.gcp-oauth</Policy>
+    </Policies>
+    <Resources/>
+    <Spec></Spec>
+    <subType>SharedFlow</subType>
+    <SharedFlows>
+        <SharedFlow>default</SharedFlow>
+    </SharedFlows>
+</SharedFlowBundle>

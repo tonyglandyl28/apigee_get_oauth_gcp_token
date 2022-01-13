@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PopulateCache async="false" continueOnError="false" enabled="true" name="pc.gcp-token">
+    <DisplayName>pc.gcp-token</DisplayName>
+    <CacheResource>gcp-token-oauth-cache</CacheResource>
+    <CacheKey>
+        <Prefix ref="organization.name"/>
+        <KeyFragment ref="environment.name"/>
+        <KeyFragment ref="apiproxy.name"/>
+        <KeyFragment ref="apiproxy.revision"/>
+        <KeyFragment ref="target.name"/>
+    </CacheKey>
+    <Source>google-credentials.id-token</Source>
+</PopulateCache>

@@ -9,10 +9,10 @@ Une fois le token récupéré alors on le met en cache durant la durée définit
 ## Pré-requis
 Lors de l'utilisation de ce sharedflow dans un proxy il faut d'abord prévoir :
 
-- Un sevice account qui a les droit d'appeler une API sur GCP
-- Le JSON de ce service account
-- Créer une entrée dans le KVM chiffré *gcp-service-account-credentials* avec en clé le nom du projet et en valeur le contenu du JSON du service account
-- Créer dans le proxy une variable nommée *private.credentialsjson* dont la valeur est le contenu du JSON du service account
+- Un sevice account qui a les droit d'appeler une API sur GCP via un IAP.
+- Le JSON de ce service account.
+- Créer une entrée dans le KVM chiffré *gcp-service-account-credentials* avec en clé le nom du projet et en valeur le contenu du JSON du service account.
+- Créer dans le proxy une variable nommée *private.credentialsjson* dont la valeur est le contenu du JSON du service account.
 
 ## Fonctionnement
 
@@ -33,10 +33,10 @@ Cette policy vérifie si une valeur existe dans un cache dont le nom est compos�
 - nom du proxy
 - numéro de la révision
 - nom de la target
-Si une valeur est trouvée alors on instancie la valeur de la variable _google-credentials.access-token_ avec cette valeur.
+Si une valeur est trouvée alors on instancie la valeur de la variable _google-credentials.id-token_ avec cette valeur.
 Cela permet d'éviter de demander un nouveau token si cette valeur est toujours présente (durée de cache encore valide).
 
-** Les 4 étapes suivantes ne sont exécutées que si la variable _google-credentials.access-token_ n'est pas vide.**
+** Les 4 étapes suivantes ne sont exécutées que si la variable _google-credentials.id-token_ n'est pas vide.**
 
 ### js.extract-credentials
 
@@ -52,15 +52,15 @@ Cette policy demande à GCP la création d'un jeton OAuth à partir du jeton JWT
 
 ### ev.extract-json
 
-Cette policy extrait le jeton OAuth renvoyé précédemment et crée une variable *google-credentials.access-token*.
+Cette policy extrait le jeton OAuth renvoyé précédemment et crée une variable *google-credentials.id-token*.
 
 ### am.add-authorization
 
-Cette policy crée une en-tête *Authorization* dont la valeur est *Bearer * + le contenu de la variable _google-credentials.access-token_.
+Cette policy crée une en-tête *Authorization* dont la valeur est *Bearer * + le contenu de la variable _google-credentials.id-token_.
 
 ### pc.gcp-token
 
-Cette policy met en cache la valeur de la variable _google-credentials.access-token_ dans un cache dont le nom est composé :
+Cette policy met en cache la valeur de la variable _google-credentials.id-token_ dans un cache dont le nom est composé :
 - nom de l'organisation
 - nom de l'environnement
 - nom du proxy
