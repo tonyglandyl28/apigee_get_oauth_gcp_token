@@ -7,7 +7,7 @@ This is a code to deploy sharedflows which are used when your backend is secured
 ## Prerequisite
 
 - A GCP Project with, for example, an App Engine.
-- A service Account with good rights to call your App Engine and it's JSON Key.
+- A service Account with good rights to call your App Engine and his JSON Key.
 - An Apigee account with an organization (free or paid).
 - [Maven](https://github.com/apigee/apigee-deploy-maven-plugin) or [apigeetools](https://github.com/apigee/apigeetool-node) install on your computer to deploy the sharedflow.
 - Maven install on local computer.
