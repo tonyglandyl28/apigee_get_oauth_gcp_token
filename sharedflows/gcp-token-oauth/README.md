@@ -2,21 +2,21 @@
 
 ## Description
 
-Ce sharedflow va permettre de demander un jeton OAuth à Google en fonction du service account qui lui ai passé en paramètre.
-Une fois le token récupéré alors on le met en cache durant la durée définit dans le fichier de configuration _caches.json_ (peut être différent pour chaque environnement. Dans nos exemples cette valeur est de 10 seconde en dev, 60 secondes en test et 3500 secondes en prd).
+This sharedflow will make it possible to request an OAuth token from Google according to the service account that was passed to it as a parameter.
+Once the token has been retrieved, then it is cached for the duration defined in the configuration file _caches.json_ (may be different for each environment. In our examples this value is 10 seconds in dev, 60 seconds in test and 3500 seconds in prd).
 [Documentation Google](https://developers.google.com/identity/protocols/oauth2/service-account)
 
-## Pré-requis
-Lors de l'utilisation de ce sharedflow dans un proxy il faut d'abord prévoir :
+## Prerequisites
+When using this sharedflow in a proxy you must first provide :
 
-- Un sevice account qui a les droit d'appeler une API sur GCP
-- Le JSON de ce service account
-- Créer une entrée dans le KVM chiffré *gcp-service-account-credentials* avec en clé le nom du projet et en valeur le contenu du JSON du service account
-- Créer dans le proxy une variable nommée *private.credentialsjson* dont la valeur est le contenu du JSON du service account
+- A service account that has the rights to call an API on GCP via Oauth
+- The JSON of this service account
+- Create an entry in the encrypted KVM *gcp-service-account-credentials* with the project name as key and the service account JSON content as value
+- Create in the proxy a variable named *private.credentialsjson* whose value is the content of the JSON of the service account
 
-## Fonctionnement
+## How to
 
-Ce sharedflow exécute 7 policies d'affilées :
+This sharedflow executes 7 policies in a row :
 - lc.gcp-token
 - js.extract-credentials
 - gjwt.generate-JWT
@@ -27,42 +27,42 @@ Ce sharedflow exécute 7 policies d'affilées :
 
 ### lc.gcp-token
 
-Cette policy vérifie si une valeur existe dans un cache dont le nom est composé :
-- nom de l'organisation
-- nom de l'environnement
-- nom du proxy
-- numéro de la révision
-- nom de la target
-Si une valeur est trouvée alors on instancie la valeur de la variable _google-credentials.access-token_ avec cette valeur.
-Cela permet d'éviter de demander un nouveau token si cette valeur est toujours présente (durée de cache encore valide).
+This policy checks if a value exists in a cache whose name is composed :
+- Organization name
+- Environment name
+- Proxy name
+- Revision number
+- Target name
+If a value is found then we instantiate the value of the _google-credentials.access-token_ variable with this value.
+This avoids asking for a new token if this value is still present (cache duration still valid).
 
-** Les 4 étapes suivantes ne sont exécutées que si la variable _google-credentials.access-token_ n'est pas vide.**
+** The next 4 steps are only executed if the _google-credentials.access-token_ variable is not empty. **
 
 ### js.extract-credentials
 
-Cette policy permet d'extraire chaque paire clé/valeur de la variable *private.credentialsjson* (qui contient le contenu du JSON du service account).
+This policy extracts each key/value pair from the *private.credentialsjson* variable (which contains the JSON content of the service account).
 
 ### gjwt.generate-JWT
 
-Cette policy utilise les informations récupérées pour générer un jeton JWT. Ce jeton est inscrit dans la variable *output_jwt*.
+This policy uses the retrieved information to generate a JWT token. This token is written in the variable *output_jwt*.
 
 ### sc.gcp-oauth
 
-Cette policy demande à GCP la création d'un jeton OAuth à partir du jeton JWT généré précédemment. Ce jeton est inscrit dans la variable *callout-token*.
+This policy asks GCP to create an OAuth token from the previously generated JWT token. This token is written in the variable *callout-token*.
 
 ### ev.extract-json
 
-Cette policy extrait le jeton OAuth renvoyé précédemment et crée une variable *google-credentials.access-token*.
+This policy extracts the OAuth token returned earlier and creates a variable *google-credentials.access-token*.
 
 ### am.add-authorization
 
-Cette policy crée une en-tête *Authorization* dont la valeur est *Bearer * + le contenu de la variable _google-credentials.access-token_.
+This policy creates an *Authorization* header whose value is *Bearer * + the content of the _google-credentials.access-token_ variable.
 
 ### pc.gcp-token
 
-Cette policy met en cache la valeur de la variable _google-credentials.access-token_ dans un cache dont le nom est composé :
-- nom de l'organisation
-- nom de l'environnement
-- nom du proxy
-- numéro de la révision
-- nom de la target
+This policy caches the value of the _google-credentials.access-token_ variable in a cache whose name is composed :
+- Organization name
+- Environment name
+- Proxy name
+- Revision number
+- Target name
